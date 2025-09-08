@@ -1,0 +1,26 @@
+-- time travel
+
+-- see 2015/2016 schema (before 10am 9/8)
+SELECT tpep_dropoff_datetime, pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude, congestion_surcharge, pulocationid, dolocationid FROM taxi_info
+AT (
+    offset => -60*60*5 -- five hours ago
+)
+WHERE year(tpep_dropoff_datetime) = 2016
+LIMIT 5;
+
+-- see 2020 schema (after 11am 9/8)
+SELECT tpep_dropoff_datetime, pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude, congestion_surcharge, pulocationid, dolocationid FROM taxi_info
+AT (
+    offset => -60*5 -- five minutes ago
+)
+WHERE year(tpep_dropoff_datetime) = 2020
+LIMIT 5;
+
+-- compare number of rows at each period
+SELECT 
+  (SELECT count(*) 
+   FROM taxi_info 
+   AT (offset => -60*60*5)) AS rows_before_schema_change,
+  (SELECT count(*) 
+   FROM taxi_info 
+   AT (offset => -60*5)) AS rows_after_schema_change;

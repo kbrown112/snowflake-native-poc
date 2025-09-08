@@ -1,9 +1,4 @@
--- ALTER TABLE taxi_info
--- RENAME COLUMN VendorID to vendorid;
-
--- ALTER TABLE taxi_info
--- RENAME COLUMN RateCodeID to ratecodeid;
-
+-- edit schema to add columns that do not exist in 2015/2016 data to table to fit 2020 data
 ALTER TABLE taxi_info
 ADD COLUMN IF NOT EXISTS congestion_surcharge INT;
 
@@ -13,4 +8,5 @@ ADD COLUMN IF NOT EXISTS PULocationID INT;
 ALTER TABLE taxi_info
 ADD COLUMN IF NOT EXISTS DOLocationID INT;
 
+-- confirm columns exist
 SELECT * FROM taxi_info LIMIT 5;

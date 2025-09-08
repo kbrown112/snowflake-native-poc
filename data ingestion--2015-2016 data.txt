@@ -1,5 +1,7 @@
+-- optional if we want to drop table
 DROP TABLE taxi_info;
 
+-- create taxi_info table (fits 2015/2016 data, will be altered later)
 CREATE TABLE taxi_info (
     VendorID smallint,
     tpep_pickup_datetime datetime,
@@ -22,8 +24,8 @@ CREATE TABLE taxi_info (
     total_amount decimal(10, 2)
 );
 
+-- insert 2015/2016 data into table from stage
 COPY INTO taxi_info FROM @NATIVE_STAGE FILES = ('yellow_tripdata_2015-01.csv', 'yellow_tripdata_2016-01.csv', 'yellow_tripdata_2016-02.csv', 'yellow_tripdata_2016-03.csv') FILE_FORMAT = (TYPE = 'CSV', SKIP_HEADER = 1);
 
-SELECT max(dropoff_latitude) FROM TAXI_INFO;
-
-SELECT * from taxi_info;
+-- confirm data is in table
+SELECT * from taxi_info LIMIT 5;

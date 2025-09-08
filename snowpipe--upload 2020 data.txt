@@ -1,0 +1,52 @@
+CREATE TABLE taxi_info_batch (
+    VendorID smallint,
+    tpep_pickup_datetime datetime,
+    tpep_dropoff_datetime datetime,
+    passenger_count smallint,
+    trip_distance decimal(11, 2),
+    RateCodeId smallint,
+    store_and_fwd_flag varchar(2),
+    PULocationID smallint,
+    DOLocationID smallint,
+    payment_type smallint,
+    fare_amount decimal(10, 2),
+    extra decimal(5, 2),
+    mta_tax decimal(4, 2),
+    tip_amount decimal(9, 2),
+    toll_amount decimal(7, 2),
+    improvement_surcharge decimal(5, 2),
+    total_amount decimal(10, 2),
+    congestion_surcharge smallint
+);
+
+
+SHOW STAGES;
+
+-- CREATE NOTIFICATION INTEGRATION my_notification_int
+--   ENABLED = TRUE
+--   DIRECTION = OUTBOUND
+--   TYPE = QUEUE
+--   NOTIFICATION_PROVIDER = AWS_SNS
+--   AWS_SNS_TOPIC_ARN = 'arn:aws:sns:us-east-2:269610886829:taxi_notification_internal'
+--   AWS_SNS_ROLE_ARN = 'aarn:aws:iam::269610886829:role/snowflake_role';
+
+CREATE OR REPLACE FILE FORMAT my_csv_format TYPE = 'CSV' SKIP_HEADER = 1 FIELD_DELIMITER = ',' TRIM_SPACE = TRUE;
+
+CREATE OR REPLACE PIPE taxi_pipe 
+AUTO_INGEST = TRUE 
+AS
+COPY INTO taxi_info (VendorID, tpep_pickup_datetime, tpep_dropoff_datetime,
+       passenger_count, trip_distance, RatecodeID, store_and_fwd_flag,
+       PULocationID, DOLocationID, payment_type, fare_amount, extra,
+       mta_tax, tip_amount, tolls_amount, improvement_surcharge,
+       total_amount, congestion_surcharge) 
+FROM @NATIVE_STAGE
+PATTERN='^batched-Native-12/.*\.csv$'
+FILE_FORMAT = (FORMAT_NAME = my_csv_format);
+
+SELECT count(*) FROM taxi_info WHERE year(tpep_pickup_datetime) = 2020;
+
+SHOW PIPES;
+
+Show stages;
+

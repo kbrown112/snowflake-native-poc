@@ -1,0 +1,16 @@
+-- ALTER TABLE taxi_info
+-- RENAME COLUMN VendorID to vendorid;
+
+-- ALTER TABLE taxi_info
+-- RENAME COLUMN RateCodeID to ratecodeid;
+
+ALTER TABLE taxi_info
+ADD COLUMN IF NOT EXISTS congestion_surcharge INT;
+
+ALTER TABLE taxi_info
+ADD COLUMN IF NOT EXISTS PULocationID INT;
+
+ALTER TABLE taxi_info
+ADD COLUMN IF NOT EXISTS DOLocationID INT;
+
+SELECT * FROM taxi_info LIMIT 5;

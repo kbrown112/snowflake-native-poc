@@ -1,0 +1,29 @@
+DROP TABLE taxi_info;
+
+CREATE TABLE taxi_info (
+    VendorID smallint,
+    tpep_pickup_datetime datetime,
+    tpep_dropoff_datetime datetime,
+    passenger_count smallint,
+    trip_distance decimal(11, 2),
+    pickup_longitude decimal (20, 17),
+    pickup_latitude decimal (20, 17), 
+    RateCodeId smallint,
+    store_and_fwd_flag varchar(2),
+    dropoff_longitude decimal (20, 17),
+    dropoff_latitude decimal (20, 17),
+    payment_type smallint,
+    fare_amount decimal(10, 2),
+    extra decimal(5, 2),
+    mta_tax decimal(4, 2),
+    tip_amount decimal(9, 2),
+    tolls_amount decimal(7, 2),
+    improvement_surcharge decimal(5, 2),
+    total_amount decimal(10, 2)
+);
+
+COPY INTO taxi_info FROM @NATIVE_STAGE FILES = ('yellow_tripdata_2015-01.csv', 'yellow_tripdata_2016-01.csv', 'yellow_tripdata_2016-02.csv', 'yellow_tripdata_2016-03.csv') FILE_FORMAT = (TYPE = 'CSV', SKIP_HEADER = 1);
+
+SELECT max(dropoff_latitude) FROM TAXI_INFO;
+
+SELECT * from taxi_info;

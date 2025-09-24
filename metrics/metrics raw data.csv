@@ -1,0 +1,23 @@
+query,warehouse,execution_time,bytes_scanned,rows
+Full Table Scan,Iceberg,345,,1
+Full Table Scan,Native,192,,1
+Partition Pruning,Iceberg,1600,,1
+Partition Pruning,Native,1100,,1
+Aggregation,Iceberg,1700,,11
+Aggregation,Native,765,,6
+Join Query,Iceberg,1200,1.5,6
+Join Query,Native,790,57900,6
+Top N,Iceberg,220,,5
+Top N,Native,447,,3
+Multi-level Join with Aggregation,Iceberg,1100,3,49
+Multi-level Join with Aggregation,Native,1600,181600,50
+Window Function for Ranking,Iceberg,8400,,64.1 million
+Window Function for Ranking,Native,5900,,64.1 million
+Subquery for Conditional Aggregation,Iceberg,756,,2
+Subquery for Conditional Aggregation,Native,581,,2
+CTE with Filtering and Aggregation,Iceberg,552,,6
+CTE with Filtering and Aggregation,Native,358,,6
+Conditional Aggregation,Iceberg,639,,5
+Conditional Aggregation,Native,280,,3
+Nested CTEs with Join and Aggregation,Iceberg,298,1.5,6
+Nested CTEs with Join and Aggregation,Native,253,154900,6
